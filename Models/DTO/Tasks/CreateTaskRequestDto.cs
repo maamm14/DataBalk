@@ -10,6 +10,8 @@ namespace UserTaskApi.Models.DTO.Tasks
         [Required]
         public required string Description { get; set; } = string.Empty;
 
+        public string? AssigneeId { get; set; }
+
         public DateTime DueDate { get; set; }
     }
 }

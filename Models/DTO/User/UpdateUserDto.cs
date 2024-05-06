@@ -1,8 +1,7 @@
 namespace UserTaskApi.Models.DTO.User
 {
-    public class UserDto
+    public class UpdateUserDto
     {
-        public required string Id { get; set; }
         public required string FirstName { get; set; }
 
         public required string LastName { get; set; }
@@ -11,6 +10,5 @@ namespace UserTaskApi.Models.DTO.User
 
         public required string UserName { get; set; }
 
-        public required string[] Roles { get; set; }
     }
 }

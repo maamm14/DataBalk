@@ -75,5 +75,13 @@ namespace UserTaskApi.Repositories.Task
             // Return the deleted task response
             return existingTask;
         }
+
+        public async Task<List<TaskDomain>> GetTasksByUserIdAsync(string? userId)
+        {
+            return await _dbContext.Tasks
+                            .Include(t => t.AssignedUser)
+                            .Where(x => x.AssigneeId == userId)
+                            .ToListAsync();
+        }
     }
 }

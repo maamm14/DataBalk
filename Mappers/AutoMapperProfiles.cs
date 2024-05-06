@@ -1,6 +1,7 @@
 using AutoMapper;
 using UserTaskApi.Models.Domain;
 using UserTaskApi.Models.DTO.Tasks;
+using UserTaskApi.Models.DTO.User;
 
 namespace UserTaskApi.Mappers
 {
@@ -11,8 +12,8 @@ namespace UserTaskApi.Mappers
             CreateMap<TaskDomain, TasksDto>().ReverseMap();
             CreateMap<CreateTaskRequestDto, TaskDomain>().ReverseMap();
             CreateMap<UpdateTaskRequestDto, TaskDomain>().ReverseMap();
-            CreateMap<TaskDomain, TasksDto>()
-            .ForMember(dest => dest.AssigneeId, opt => opt.MapFrom(src => src.AssignedUser));
+            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<UserRegisterDto, User>().ReverseMap();
         }
     }
 }

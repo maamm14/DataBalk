@@ -13,5 +13,6 @@ namespace UserTaskApi.Repositories.TaskRepo
         Task<TaskDomain?> UpdateAsync(int id, TaskDomain tasks);
 
         Task<TaskDomain?> DeleteAsync(int id);
+        Task<List<TaskDomain>> GetTasksByUserIdAsync(string? userId);
     }
 }

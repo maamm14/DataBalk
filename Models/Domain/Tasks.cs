@@ -23,7 +23,6 @@ namespace UserTaskApi.Models.Domain
 
         public string? AssigneeId { get; set; }
 
-        [ForeignKey("AssignedUserId")]
-        public IdentityUser? AssignedUser { get; set; }
+        public User? AssignedUser { get; set; }
     }
 }

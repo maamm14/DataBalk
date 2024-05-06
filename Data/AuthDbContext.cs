@@ -5,11 +5,12 @@ using UserTaskApi.Models.Domain; // Include the namespace where your User model 
 
 namespace UserTaskApi.Data
 {
-    public class AuthDbContext : IdentityDbContext<User>
+    public class AuthDbContext : IdentityDbContext<User, IdentityRole, string>
     {
-        public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
-        {
-        }
+        public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options) { }
+
+        public DbSet<User> User { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

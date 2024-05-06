@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserTaskApi.Models.Domain;
 using UserTaskApi.Models.DTO.Tasks;
@@ -8,6 +10,8 @@ namespace UserTaskApi.Controllers
 {
     [Route("api/task")]
     [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public class TaskController : ControllerBase
     {
         private readonly ITaskRepository _taskRepository;
@@ -19,9 +23,27 @@ namespace UserTaskApi.Controllers
 
         }
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAll()
         {
-            List<TaskDomain> tasks = await _taskRepository.GetAllAsync();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Check if the user is an admin
+            bool isAdmin = User.IsInRole("Admin");
+
+            List<TaskDomain> tasks;
+            if (isAdmin)
+            {
+                // If the user is an admin, get all tasks
+                tasks = await _taskRepository.GetAllAsync();
+            }
+            else
+            {
+                // If the user is not an admin, get tasks specific to the user
+                tasks = await _taskRepository.GetTasksByUserIdAsync(userId);
+            }
 
             List<TasksDto> tasksDtos = _mapper.Map<List<TasksDto>>(tasks);
 
@@ -32,6 +54,17 @@ namespace UserTaskApi.Controllers
 
             return Ok(tasksDtos);
         }
+        // List<TaskDomain> tasks = await _taskRepository.GetAllAsync();
+
+        // List<TasksDto> tasksDtos = _mapper.Map<List<TasksDto>>(tasks);
+
+        // if (tasksDtos.Count == 0)
+        // {
+        //     return NotFound();
+        // }
+
+        // return Ok(tasksDtos);
+        // }
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById(int Id)
